@@ -579,12 +579,19 @@ def bot(op):
                 else:
                     cl.sendText(msg.to,"It can't be used besides the group.")
 #--------------------------------------------------------
-            elif "Kick: " in msg.text:
-                midd = msg.text.replace("Kick: ","")
-		if midd not in admin:
-		    cl.kickoutFromGroup(msg.to,[midd])
-		else:
-		    cl.sendText(msg.to,"Admin Detected")
+            elif "nk " in msg.text:
+              if msg.from_ in admin:
+                key = eval(msg.contentMetadata["MENTION"])
+                key["MENTIONEES"][0]["M"]
+                targets = []
+                for x in key["MENTIONEES"]:
+                    targets.append(x["M"])
+                for target in targets:
+                   try:
+                      cl.kickoutFromGroup(msg.to,[target])
+                      print "[Command] Kick"
+                   except:
+                      pass
 #--------------------------------------------------------
             elif "Invite: " in msg.text:
                 midd = msg.text.replace("Invite: ","")
