@@ -580,7 +580,6 @@ def bot(op):
                     cl.sendText(msg.to,"It can't be used besides the group.")
 #--------------------------------------------------------
             elif "nk " in msg.text:
-              if msg.from_ in admin:
                 key = eval(msg.contentMetadata["MENTION"])
                 key["MENTIONEES"][0]["M"]
                 targets = []
@@ -590,8 +589,8 @@ def bot(op):
                    try:
                       cl.kickoutFromGroup(msg.to,[target])
                       print "[Command] Kick"
-                   except:
-                      pass
+                  except:
+                     pass
 #--------------------------------------------------------
             elif "Invite: " in msg.text:
                 midd = msg.text.replace("Invite: ","")
@@ -668,28 +667,6 @@ def bot(op):
 		except Exception as e:
 		    cl.sendText(msg.to, str(e))
 #--------------------------------------------------------
-	    elif "Nk " in msg.text:
-                nk0 = msg.text.replace("Nk ","")
-                nk1 = nk0.lstrip()
-                nk2 = nk1.replace("@","")
-                nk3 = nk2.rstrip()
-                _name = nk3
-                gs = cl.getGroup(msg.to)
-                targets = []
-                for s in gs.members:
-                    if _name in s.displayName:
-                       targets.append(s.mid)
-                if targets == []:
-                    sendMessage(msg.to,"user does not exist")
-                    pass
-                else:
-                     for target in targets:
-                          try:
-                              klist=[cl,ki,kk,kc]
-                              kicker=random.choice(klist)
-                              kicker.kickoutFromGroup(msg.to,[target])
-                              print (msg.to,[g.mid])
-                          except:
 		
 #--------------------------------------------------------
             elif "Ban @" in msg.text:
