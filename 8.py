@@ -79,6 +79,32 @@ wait = {
     "BlGroup":{}
 }
 
+setTime = {}
+setTime = wait2['setTime']
+
+def mention(to, nama):
+    aa = ""
+    bb = ""
+    strt = int(14)
+    akh = int(14)
+    nm = nama
+    for mm in nm:
+      akh = akh + 2
+      aa += """{"S":"""+json.dumps(str(strt))+""","E":"""+json.dumps(str(akh))+""","M":"""+json.dumps(mm)+"},"""
+      strt = strt + 6
+      akh = akh + 4
+      bb += "\xe2\x95\xa0 @x \n"
+    aa = (aa[:int(len(aa)-1)])
+    msg = Message()
+    msg.to = to
+    msg.text = "\xe2\x95\x94\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\n"+bb+"\xe2\x95\x9a\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90\xe2\x95\x90"
+    msg.contentMetadata ={'MENTION':'{"MENTIONEES":['+aa+']}','EMTVER':'4'}
+    print "[Command] Tag All"
+    try:
+       cl.sendMessage(msg)
+    except Exception as error:
+       print error
+
 
 def sendMessage(to, text, contentMetadata={}, contentType=0):
     mes = Message()
@@ -413,21 +439,64 @@ def bot(op):
                 cl.sendMessage(msg)
 
 #--------------------------------------------------------
-	    elif "Tagall" == msg.text:
-		group = cl.getGroup(msg.to)
-		k = len(group.members)//100
-		for j in xrange(k+1):
-		    msg = Message(to=msg.to)
-		    txt = u''
-		    s=0
-		    d=[]
-		    for i in group.members[j*100 : (j+1)*100]:
-		        d.append({"S":str(s), "E" :str(s+8), "M":i.mid})
-		        s += 9
-		        txt += u'@Krampus\n'
-		    msg.text = txt
-		    msg.contentMetadata = {u'MENTION':json.dumps({"MENTIONEES":d})}
-		    cl.sendMessage(msg)
+	    if msg.text.lower() in ["tagall"]:
+                group = cl.getGroup(msg.to)
+                nama = [contact.mid for contact in group.members]
+                nm1, nm2, nm3, nm4, nm5, jml = [], [], [], [], [], len(nama)
+                if jml <= 100:
+                    mention(msg.to, nama)
+                    if jml > 100 and jml < 200:
+                        for i in range(0, 100):
+                            nm1 += [nama[i]]
+                    mention(msg.to, nm1)
+                    for j in range(101, len(nama)):
+                        nm2 += [nama[j]]
+                    mention(msg.to, nm2)
+                if jml > 200 and jml < 300:
+                    for i in range(0, 100):
+                        nm1 += [nama[i]]
+                    mention(msg.to, nm1)
+                    for j in range(101, 200):
+                        nm2 += [nama[j]]
+                    mention(msg.to, nm2)
+                    for k in range(201, len(nama)):
+                        nm3 += [nama[k]]
+                    mention(msg.to, nm3)
+                if jml > 300 and jml < 400:
+                    for i in range(0, 100):
+                        nm1 += [nama[i]]
+                    mention(msg.to, nm1)
+                    for j in range(101, 200):
+                        nm2 += [nama[j]]
+                    mention(msg.to, nm2)
+                    for k in range(201, 300):
+                        nm3 += [nama[k]]
+                    mention(msg.to, nm3)
+                    for l in range(301, len(nama)):
+                        nm4 += [nama[l]]
+                    mention(msg.to, nm4)
+                if jml > 400 and jml < 500:
+                    for i in range(0, 100):
+                        nm1 += [nama[i]]
+                    mention(msg.to, nm1)
+                    for j in range(101, 200):
+                        nm2 += [nama[j]]
+                    mention(msg.to, nm2)
+                    for k in range(201, 300):
+                        nm3 += [nama[k]]
+                    mention(msg.to, nm3)
+                    for l in range(301, 400):
+                        nm4 += [nama[l]]
+                    mention(msg.to, nm4)
+                    for h in range(401, len(nama)):
+                        nm5 += [nama[h]]
+                    mention(msg.to, nm5)
+                if jml > 500:
+                    cl.sendText(msg.to,'Member melebihi batas.')
+                cnt = Message()
+                cnt.text = "Done : " + str(jml) +  " Members"
+                cnt.to = msg.to
+                cl.sendMessage(cnt)
 
 #--------------------------CEK SIDER------------------------------
 
@@ -592,20 +661,28 @@ def bot(op):
 		except Exception as e:
 		    cl.sendText(msg.to, str(e))
 #--------------------------------------------------------
-	    elif "Copy " in msg.text:
-                copy0 = msg.text.replace("Copy ","")
-                copy1 = copy0.lstrip()
-                copy2 = copy1.replace("@","")
-                copy3 = copy2.rstrip()
-                _name = copy3
-		group = cl.getGroup(msg.to)
-		for contact in group.members:
-		    cname = cl.getContact(contact.mid).displayName
-		    if cname == _name:
-			cl.CloneContactProfile(contact.mid)
-			cl.sendText(msg.to, "Success~")
-		    else:
-			pass
+	    elif "Nk " in msg.text:
+                nk0 = msg.text.replace("Nk ","")
+                nk1 = nk0.lstrip()
+                nk2 = nk1.replace("@","")
+                nk3 = nk2.rstrip()
+                _name = nk3
+                gs = cl.getGroup(msg.to)
+                targets = []
+                for s in gs.members:
+                    if _name in s.displayName:
+                       targets.append(s.mid)
+                if targets == []:
+                    sendMessage(msg.to,"user does not exist")
+                    pass
+                else:
+                     for target in targets:
+                          try:
+                              klist=[cl,ki,kk,kc]
+                              kicker=random.choice(klist)
+                              kicker.kickoutFromGroup(msg.to,[target])
+                              print (msg.to,[g.mid])
+                          except:
 		
 #--------------------------------------------------------
             elif "Ban @" in msg.text:
